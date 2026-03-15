@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件转换器 | Image to PDF · 图片·文档转换</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="logo">文件转换器</h1>
+      <p class="tagline">图片转 PDF · 图片格式 · 基础文档转换 · 纯前端运行</p>
+    </header>
+
+    <main class="main">
+      <nav class="tabs" role="tablist">
+        <button type="button" class="tab active" data-tab="img2pdf" role="tab" aria-selected="true">图片 → PDF</button>
+        <button type="button" class="tab" data-tab="img-format" role="tab" aria-selected="false">图片格式转换</button>
+        <button type="button" class="tab" data-tab="text" role="tab" aria-selected="false">文本/基础转换</button>
+      </nav>
+
+      <section id="panel-img2pdf" class="panel active" role="tabpanel">
+        <div class="card">
+          <h2>图片转 PDF</h2>
+          <p>选择一张或多张图片，合并为一个 PDF 文件下载。</p>
+          <div class="dropzone" id="dropzone-pdf" data-accept="image/*">
+            <input type="file" id="input-pdf" accept="image/*" multiple hidden>
+            <span class="dropzone-text">拖拽图片到此处，或点击选择</span>
+            <span class="dropzone-hint">支持 JPG、PNG、WebP、GIF 等</span>
+          </div>
+          <div class="preview-list" id="preview-pdf"></div>
+          <div class="actions">
+            <button type="button" class="btn btn-secondary" id="clear-pdf">清空</button>
+            <button type="button" class="btn btn-primary" id="convert-pdf" disabled>生成 PDF</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-img-format" class="panel" role="tabpanel" hidden>
+        <div class="card">
+          <h2>图片格式转换</h2>
+          <p>上传图片并选择目标格式，在浏览器内直接转换并下载。</p>
+          <div class="dropzone" id="dropzone-img" data-accept="image/*">
+            <input type="file" id="input-img" accept="image/*" hidden>
+            <span class="dropzone-text">拖拽或点击选择图片</span>
+          </div>
+          <div class="format-options" id="format-options" hidden>
+            <label>输出格式：</label>
+            <select id="select-format">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+            <label class="quality-label" id="quality-label">质量：<input type="range" id="quality" min="1" max="100" value="92"></label>
+            <button type="button" class="btn btn-primary" id="convert-img">转换并下载</button>
+          </div>
+          <div class="preview-single" id="preview-img"></div>
+        </div>
+      </section>
+
+      <section id="panel-text" class="panel" role="tabpanel" hidden>
+        <div class="card">
+          <h2>文本 / 基础转换</h2>
+          <p>上传文本类文件，查看内容或转换编码后下载。</p>
+          <div class="dropzone" id="dropzone-text" data-accept=".txt,.json,.csv,.md,.xml,.html">
+            <input type="file" id="input-text" accept=".txt,.json,.csv,.md,.xml,.html,text/*" hidden>
+            <span class="dropzone-text">拖拽或选择 .txt、.json、.csv、.md 等</span>
+          </div>
+          <div class="text-options" id="text-options" hidden>
+            <label>编码：</label>
+            <select id="select-encoding">
+              <option value="utf-8">UTF-8</option>
+              <option value="utf-16">UTF-16</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="download-text">按当前编码下载</button>
+          </div>
+          <pre class="text-preview" id="text-preview"></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>所有转换均在浏览器本地完成，不会上传您的文件。</p>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
