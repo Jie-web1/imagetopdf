@@ -102,6 +102,39 @@
     convertPdfBtn.disabled = true;
   });
 
+  function drawImageWithOrientation(file, dataUrl, next) {
+    const format = file.type === "image/png" ? "PNG" : "JPEG";
+    const img = new Image();
+    img.onload = function () {
+      const tryBitmap = () => {
+        if (typeof createImageBitmap !== "function") {
+          useFallback();
+          return;
+        }
+        createImageBitmap(img, { imageOrientation: "from-image" })
+          .then(function (bitmap) {
+            const imgW = bitmap.width;
+            const imgH = bitmap.height;
+            const canvas = document.createElement("canvas");
+            canvas.width = imgW;
+            canvas.height = imgH;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(bitmap, 0, 0);
+            bitmap.close();
+            next(canvas.toDataURL(format), imgW, imgH, format);
+          })
+          .catch(function () {
+            useFallback();
+          });
+      };
+      const useFallback = () => {
+        next(dataUrl, img.naturalWidth || img.width, img.naturalHeight || img.height, format);
+      };
+      tryBitmap();
+    };
+    img.src = dataUrl;
+  }
+
   convertPdfBtn.addEventListener("click", () => {
     if (pdfFiles.length === 0) return;
     let doc = null;
@@ -112,13 +145,10 @@
         return;
       }
       const file = pdfFiles[index];
-      const format = file.type === "image/png" ? "PNG" : "JPEG";
       const reader = new FileReader();
       reader.onload = function (e) {
-        const img = new Image();
-        img.onload = function () {
-          const imgW = img.width;
-          const imgH = img.height;
+        const dataUrl = e.target.result;
+        drawImageWithOrientation(file, dataUrl, function (imageData, imgW, imgH, format) {
           const isLandscape = imgW > imgH;
           const orientation = isLandscape ? "landscape" : "portrait";
 
@@ -135,10 +165,9 @@
           const h = imgH * ratio;
           const x = (pageW - w) / 2;
           const y = (pageH - h) / 2;
-          doc.addImage(e.target.result, format, x, y, w, h);
+          doc.addImage(imageData, format, x, y, w, h);
           addImage(index + 1);
-        };
-        img.src = e.target.result;
+        });
       };
       reader.readAsDataURL(file);
     }
