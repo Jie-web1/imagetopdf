@@ -54,11 +54,47 @@ body {
   margin-bottom: 2rem;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+
 .logo {
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 0.35rem;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.lang-btn {
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--transition), background var(--transition), border-color var(--transition);
+}
+
+.lang-btn:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.lang-btn.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-muted);
 }
 
 .tagline {

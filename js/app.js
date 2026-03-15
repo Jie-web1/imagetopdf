@@ -3,6 +3,12 @@
 
   const { jsPDF } = window.jspdf;
 
+  function getText(key) {
+    const lang = window.getCurrentLang ? window.getCurrentLang() : "zh";
+    const t = window.I18N && window.I18N[lang];
+    return (t && t[key]) != null ? t[key] : key;
+  }
+
   // ----- Tab switching -----
   const tabs = document.querySelectorAll(".tab");
   const panels = document.querySelectorAll(".panel");
@@ -81,7 +87,7 @@
         '" alt="">' +
         '<button type="button" class="remove" data-index="' +
         i +
-        '" aria-label="移除">×</button>';
+        '" aria-label="' + getText("remove") + '">×</button>';
       previewPdf.appendChild(div);
       div.querySelector(".remove").addEventListener("click", (e) => {
         const idx = parseInt(e.currentTarget.dataset.index, 10);
@@ -198,7 +204,7 @@
     currentImageFile = files[0];
     formatOptions.hidden = false;
     const url = URL.createObjectURL(currentImageFile);
-    previewImg.innerHTML = '<img src="' + url + '" alt="预览">';
+    previewImg.innerHTML = '<img src="' + url + '" alt="' + getText("preview") + '">';
   });
 
   convertImgBtn.addEventListener("click", () => {
@@ -255,7 +261,7 @@
       currentTextContent = e.target.result;
       textPreview.textContent = currentTextContent.slice(0, 50000);
       if (currentTextContent.length > 50000) {
-        textPreview.textContent += "\n\n… (已截断，下载将包含完整内容)";
+        textPreview.textContent += getText("truncated");
       }
     };
     if (encoding === "utf-16") {
