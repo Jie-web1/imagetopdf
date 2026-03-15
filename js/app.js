@@ -104,7 +104,7 @@
 
   convertPdfBtn.addEventListener("click", () => {
     if (pdfFiles.length === 0) return;
-    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    let doc = null;
 
     function addImage(index) {
       if (index >= pdfFiles.length) {
@@ -117,16 +117,24 @@
       reader.onload = function (e) {
         const img = new Image();
         img.onload = function () {
-          const pageW = doc.internal.pageSize.getWidth();
-          const pageH = doc.internal.pageSize.getHeight();
           const imgW = img.width;
           const imgH = img.height;
+          const isLandscape = imgW > imgH;
+          const orientation = isLandscape ? "landscape" : "portrait";
+
+          if (index === 0) {
+            doc = new jsPDF({ orientation, unit: "mm", format: "a4" });
+          } else {
+            doc.addPage("a4", orientation);
+          }
+
+          const pageW = doc.internal.pageSize.getWidth();
+          const pageH = doc.internal.pageSize.getHeight();
           const ratio = Math.min(pageW / imgW, pageH / imgH, 1);
           const w = imgW * ratio;
           const h = imgH * ratio;
           const x = (pageW - w) / 2;
           const y = (pageH - h) / 2;
-          if (index > 0) doc.addPage();
           doc.addImage(e.target.result, format, x, y, w, h);
           addImage(index + 1);
         };

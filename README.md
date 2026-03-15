@@ -2,6 +2,22 @@
 
 纯前端实现的文件转换工具：**图片转 PDF**、**图片格式转换**、**文本/基础文件查看与编码下载**。所有处理均在浏览器本地完成，不上传任何文件。
 
+## 在线访问（GitHub Pages）
+
+启用 GitHub Pages 后，你的站点地址为：
+
+**https://jie-web1.github.io/image_to_pdf/**
+
+### 如何开启
+
+1. 打开仓库：https://github.com/Jie-web1/image_to_pdf  
+2. 点击 **Settings** → 左侧 **Pages**  
+3. 在 **Build and deployment** 里：**Source** 选 **Deploy from a branch**  
+4. **Branch** 选 `main`，文件夹选 **/ (root)**，点 **Save**  
+5. 等一两分钟，刷新 **Pages** 页面会显示绿色提示和上述 URL  
+
+之后用 `https://jie-web1.github.io/image_to_pdf/` 访问即可（HTTPS，显示为安全）。
+
 ## 功能
 
 | 功能 | 说明 |
